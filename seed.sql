@@ -8,7 +8,7 @@ CREATE TABLE department (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE role (
+CREATE TABLE emp_role (
 	id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL(9,2) NULL,
@@ -25,12 +25,6 @@ CREATE TABLE employee (
     PRIMARY KEY (id)
 );
 
-INSERT INTO department (id, name)
-VALUES (1, "Banking and Financial Services");
-
-INSERT INTO department (id, name)
-VALUES (2, "Technology");
-
-INSERT INTO department (id, name)
-VALUES (3, "Corporate");
-
+SELECT * FROM department;
+SELECT * FROM emp_role;
+SELECT * FROM employee;

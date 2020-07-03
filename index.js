@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 // Set up connection
 const connection = mysql.createConnection({
@@ -134,6 +135,8 @@ const deleteEmp = (empId) => {
     });
   });
 };
+
+// console.table([employees_db]);
 
 // Bonus points if you're able to:
 // Update employee managers

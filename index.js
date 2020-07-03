@@ -85,9 +85,9 @@ const mainMenu = () => {
           break;
       }
     });
-  viewAllDept();
 };
 
+viewAllDept();
 // // View all departments
 // const viewAllDept = () => {
 //   return new Promise((resolve, reject) => {
@@ -100,7 +100,7 @@ const mainMenu = () => {
 //     });
 //   });
 // };
-
+viewAllRoles();
 // // View all roles
 // const viewAllRoles = () => {
 //   return new Promise((resolve, reject) => {
@@ -114,6 +114,7 @@ const mainMenu = () => {
 //   });
 // };
 
+viewAllEmps();
 // // View all employees
 // const viewAllEmps = () => {
 //   return new Promise((resolve, reject) => {

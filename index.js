@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 // const cTable = require("console.table");
 const connection = require("./connection");
 const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
+const { addDept } = require("./add");
 
 const mainMenu = () => {
   inquirer
@@ -73,74 +74,6 @@ const mainMenu = () => {
 };
 
 mainMenu();
-
-// // View all departments
-// const viewAllDept = () => {
-//   return new Promise((resolve, reject) => {
-//     connection.query("SELECT name FROM department", (err, data) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         resolve(data);
-//       }
-//     });
-//   });
-// };
-
-// // View all roles
-// const viewAllRoles = () => {
-//   return new Promise((resolve, reject) => {
-//     connection.query("SELECT title FROM emp_role", (err, data) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         resolve(data);
-//       }
-//     });
-//   });
-// };
-
-// // View all employees
-// const viewAllEmps = () => {
-//   return new Promise((resolve, reject) => {
-//     connection.query(
-//       "SELECT first_name, last_name FROM employee",
-//       (err, data) => {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           resolve(data);
-//         }
-//       }
-//     );
-//   });
-// };
-
-// Add a department
-const addDept = (addDeptText) => {
-  inquirer
-    .prompt({
-      type: "prompt",
-      name: "addDeptText",
-      message: "What is the name of the department you would like to add?",
-    })
-    .then(({ addDeptText }) => {
-      console.log(addDeptText);
-      return new Promise((resolve, reject) => {
-        connection.query(
-          "INSERT INTO department SET ?",
-          [{ name: addDeptText }],
-          (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve({ msg: "A department was successfully added." });
-            }
-          }
-        );
-      });
-    });
-};
 
 // Update an employee role
 const updateEmpRole = (empId, roleId) => {

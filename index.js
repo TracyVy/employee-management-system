@@ -1,23 +1,8 @@
-const mysql = require("mysql");
+// const mysql = require("mysql");
 const inquirer = require("inquirer");
-const cTable = require("console.table");
+// const cTable = require("console.table");
+const connection = require("./connection");
 const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
-
-// Set up connection
-const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "password",
-  database: "employees_db",
-});
-
-// Test connection
-connection.connect((err) => {
-  if (err) throw err;
-  console.log("We are connected to:", connection.threadId);
-  mainMenu();
-});
 
 const mainMenu = () => {
   inquirer
@@ -87,7 +72,8 @@ const mainMenu = () => {
     });
 };
 
-viewAllDept();
+mainMenu();
+
 // // View all departments
 // const viewAllDept = () => {
 //   return new Promise((resolve, reject) => {
@@ -100,7 +86,7 @@ viewAllDept();
 //     });
 //   });
 // };
-viewAllRoles();
+
 // // View all roles
 // const viewAllRoles = () => {
 //   return new Promise((resolve, reject) => {
@@ -114,7 +100,6 @@ viewAllRoles();
 //   });
 // };
 
-viewAllEmps();
 // // View all employees
 // const viewAllEmps = () => {
 //   return new Promise((resolve, reject) => {

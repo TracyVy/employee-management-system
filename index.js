@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
+const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
 
 // Set up connection
 const connection = mysql.createConnection({
@@ -25,8 +26,8 @@ const mainMenu = () => {
       message: "What would you like to do?",
       choices: [
         "View all departments",
-        // "View all roles",
-        // "View all employees",
+        "View all roles",
+        "View all employees",
         "Add a department",
         // "Add a role",
         // "Add an employee",
@@ -41,6 +42,24 @@ const mainMenu = () => {
       switch (menuChoice) {
         case "View all departments":
           viewAllDept().then((res) => {
+            res.forEach((element) => {
+              console.log(element);
+            });
+            mainMenu();
+          });
+          break;
+
+        case "View all roles":
+          viewAllRoles().then((res) => {
+            res.forEach((element) => {
+              console.log(element);
+            });
+            mainMenu();
+          });
+          break;
+
+        case "View all employees":
+          viewAllEmps().then((res) => {
             res.forEach((element) => {
               console.log(element);
             });
@@ -69,48 +88,97 @@ const mainMenu = () => {
   viewAllDept();
 };
 
-// View all departments
-const viewAllDept = () => {
-  return new Promise((resolve, reject) => {
-    connection.query("SELECT * FROM department", (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-};
+// // View all departments
+// const viewAllDept = () => {
+//   return new Promise((resolve, reject) => {
+//     connection.query("SELECT name FROM department", (err, data) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(data);
+//       }
+//     });
+//   });
+// };
+
+// // View all roles
+// const viewAllRoles = () => {
+//   return new Promise((resolve, reject) => {
+//     connection.query("SELECT title FROM emp_role", (err, data) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(data);
+//       }
+//     });
+//   });
+// };
+
+// // View all employees
+// const viewAllEmps = () => {
+//   return new Promise((resolve, reject) => {
+//     connection.query(
+//       "SELECT first_name, last_name FROM employee",
+//       (err, data) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(data);
+//         }
+//       }
+//     );
+//   });
+// };
 
 // Add a department
-const addDept = (dept_userText) => {
-  return new Promise((resolve, reject) => {
-    connection.query(
-      "INSERT INTO department SET ?",
-      [{ name: dept_userText }],
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ msg: "A department was successfully added." });
-        }
-      }
-    );
-  });
+const addDept = (addDeptText) => {
+  inquirer
+    .prompt({
+      type: "prompt",
+      name: "addDeptText",
+      message: "What is the name of the department you would like to add?",
+    })
+    .then(({ addDeptText }) => {
+      console.log(addDeptText);
+      return new Promise((resolve, reject) => {
+        connection.query(
+          "INSERT INTO department SET ?",
+          [{ name: addDeptText }],
+          (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({ msg: "A department was successfully added." });
+            }
+          }
+        );
+      });
+    });
 };
 
 // Update an employee role
-const updateEmpRole = (empObj) => {
+const updateEmpRole = (empId, roleId) => {
+  inquirer.prompt({
+    type: "list",
+    message: "What would you like to do?",
+    choices: [
+      "John Doe",
+      "Mike Chan",
+      "Ashely Rodriguez",
+      "Kevin Tupik",
+      "Malia Brown",
+      "Sarah Lourd",
+      "Tom Allen",
+    ],
+    name: "empList",
+  });
   return new Promise((resolve, reject) => {
     query = connection.query(
-      "UPDATE employee SET ? WHERE ?",
-      [
+      "UPDATE employee SET ? WHERE ?"[
         {
-          id: empObj.empId,
-          last_name: empObj.empLastName,
-          first_name: empObj.empFirstName,
-          role_id: empObj.empRoleId,
-        },
+          id: empId,
+          role_id: roleId,
+        }
       ],
       (err) => {
         if (err) {
@@ -135,8 +203,6 @@ const deleteEmp = (empId) => {
     });
   });
 };
-
-// console.table([employees_db]);
 
 // Bonus points if you're able to:
 // Update employee managers

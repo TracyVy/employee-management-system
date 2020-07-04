@@ -1,6 +1,5 @@
-// const mysql = require("mysql");
 const inquirer = require("inquirer");
-// const cTable = require("console.table");
+const cTable = require("console.table");
 const connection = require("./connection");
 const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
 const { addDept, addRole, addEmp } = require("./add");
@@ -24,7 +23,6 @@ const mainMenu = () => {
       ],
     })
     .then(({ menuChoice }) => {
-      console.log(menuChoice);
       switch (menuChoice) {
         case "View all departments":
           viewAllDept().then((res) => {
@@ -84,38 +82,88 @@ const mainMenu = () => {
 mainMenu();
 
 // Update an employee role
-const updateEmpRole = (empId, roleId) => {
-  inquirer.prompt({
-    type: "list",
-    message: "Which employee needs a role change?",
-    choices: [
-      "John Doe",
-      "Mike Chan",
-      "Ashely Rodriguez",
-      "Kevin Tupik",
-      "Malia Brown",
-      "Sarah Lourd",
-      "Tom Allen",
-    ],
-    name: "empList",
-  });
-  return new Promise((resolve, reject) => {
-    query = connection.query(
-      "UPDATE employee SET ? WHERE ?"[
-        {
-          id: empId,
-          role_id: roleId,
-        }
-      ],
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ msg: "An employee's role has been updated." });
-        }
+const updateEmpRole = (empChoice) => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "empChoice",
+        message: "Which employee needs his/her role changed?",
+        choices: [
+          "John Doe",
+          "Mike Chan",
+          "Ashely Rodriguez",
+          "Kevin Tupik",
+          "Malia Brown",
+          "Sarah Lourd",
+          "Tom Allen",
+        ],
+      },
+      {
+        type: "list",
+        name: "chosenRole",
+        message: "What role will this employee have?",
+        choices: [
+          "Sales Lead",
+          "Salesperson",
+          "Lead Engineer",
+          "Software Engineer",
+          "Accountant",
+          "Legal Team Lead",
+          "Lawyer",
+        ],
+      },
+    ])
+    .then(({ empChoice, chosenRole }) => {
+      if (empChoice == "John Doe") {
+        empId = "1";
+      } else if (empChoice == "Mike Chan") {
+        empId = "2";
+      } else if (empChoice == "Ashley Rodriguez") {
+        empId = "3";
+      } else if (empChoice == "Kevin Tupik") {
+        empId = "4";
+      } else if (empChoice == "Malia Brown") {
+        empId = "6";
+      } else if (empChoice == "Sarah Lourd") {
+        empId = "7";
+      } else if (empChoice == "Tom Allen") {
+        empId = "8";
       }
-    );
-  });
+      if (chosenRole == "Sales Lead") {
+        role_id = "1";
+      } else if (chosenRole == "Salesperson") {
+        role_id = "2";
+      } else if (chosenRole == "Lead Engineer") {
+        role_id = "3";
+      } else if (chosenRole == "Software Engineer") {
+        role_id = "4";
+      } else if (chosenRole == "Accountant") {
+        role_id = "5";
+      } else if (chosenRole == "Legal Team Lead") {
+        role_id = "6";
+      } else if (chosenRole == "Lawyer") {
+        role_id = "7";
+      }
+      return new Promise((resolve, reject) => {
+        connection.query(
+          "UPDATE employee SET ? WHERE ?",
+          [
+            {
+              id: empId,
+              role_id: role_id,
+            },
+          ],
+          (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({ msg: "An employee's role has been updated." });
+            }
+          }
+        );
+      });
+    });
 };
 
 // Delete an employee

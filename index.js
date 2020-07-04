@@ -1,5 +1,4 @@
 const inquirer = require("inquirer");
-// const cTable = require("console.table");
 const connection = require("./connection");
 const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
 const { addDept, addRole, addEmp } = require("./add");
@@ -183,7 +182,7 @@ const deleteEmp = () => {
         "Tom Allen",
       ],
     })
-    .then(({ empChoice, chosenRole }) => {
+    .then(({ empChoice }) => {
       if (empChoice == "John Doe") {
         empId = "1";
       } else if (empChoice == "Mike Chan") {

@@ -37,3 +37,9 @@ SELECT * FROM employee;
 SELECT employee.id, employee.first_name,  emp_role.title, employee.manager_id
 FROM employee
 INNER JOIN emp_role ON emp_role.id = employee.role_id;
+
+-- Update an employee's role;
+UPDATE employee SET role_id = ? WHERE id = ?;
+
+-- Delete an employee by id;
+DELETE FROM employee WHERE id = ?;

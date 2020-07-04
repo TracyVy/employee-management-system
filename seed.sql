@@ -33,5 +33,7 @@ SELECT * FROM department;
 SELECT * FROM emp_role;
 SELECT * FROM employee;
 
--- Update example
-UPDATE employee SET role_id = '?' WHERE first_name = '?'
+-- View of joined tables: employee and emp_role 
+SELECT employee.id, employee.first_name,  emp_role.title, employee.manager_id
+FROM employee
+INNER JOIN emp_role ON emp_role.id = employee.role_id;

@@ -82,7 +82,7 @@ const mainMenu = () => {
 mainMenu();
 
 // Update an employee role
-const updateEmpRole = (empChoice) => {
+const updateEmpRole = () => {
   inquirer
     .prompt([
       {
@@ -147,7 +147,7 @@ const updateEmpRole = (empChoice) => {
       }
       return new Promise((resolve, reject) => {
         connection.query(
-          "UPDATE employee SET role_id = ? WHERE id = ?",
+          `UPDATE employee SET role_id = ${role_id} WHERE id = ${empId}`,
           [
             {
               id: empId,
@@ -167,21 +167,52 @@ const updateEmpRole = (empChoice) => {
 };
 
 // Delete an employee
-const deleteEmp = (empId) => {
-  return new Promise((resolve, reject) => {
-    connection.query("DELETE FROM employee WHERE ?", [{ id: empId }], (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({ msg: "An employee has been deleted." });
+const deleteEmp = () => {
+  inquirer
+    .prompt({
+      type: "list",
+      name: "empChoice",
+      message: "Which employee needs his/her role changed?",
+      choices: [
+        "John Doe",
+        "Mike Chan",
+        "Ashely Rodriguez",
+        "Kevin Tupik",
+        "Malia Brown",
+        "Sarah Lourd",
+        "Tom Allen",
+      ],
+    })
+    .then(({ empChoice, chosenRole }) => {
+      if (empChoice == "John Doe") {
+        empId = "1";
+      } else if (empChoice == "Mike Chan") {
+        empId = "2";
+      } else if (empChoice == "Ashley Rodriguez") {
+        empId = "3";
+      } else if (empChoice == "Kevin Tupik") {
+        empId = "4";
+      } else if (empChoice == "Malia Brown") {
+        empId = "6";
+      } else if (empChoice == "Sarah Lourd") {
+        empId = "7";
+      } else if (empChoice == "Tom Allen") {
+        empId = "8";
       }
+      return new Promise((resolve, reject) => {
+        connection.query(
+          "DELETE FROM employee WHERE ?",
+          [{ id: empId }],
+          (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve({ msg: "An employee has been deleted." });
+            }
+          }
+        );
+      });
     });
-  });
 };
 
 module.exports = { mainMenu };
-// Bonus points if you're able to:
-// Update employee managers
-// View employees by manager
-// Delete departments, roles, and employees
-// View the total utilized budget of a department -- ie the combined salaries of all employees in that department

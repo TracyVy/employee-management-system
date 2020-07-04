@@ -2,7 +2,7 @@ const connection = require("./connection");
 const inquirer = require("inquirer");
 
 // Add a department
-const addDept = (addDeptText) => {
+const addDept = () => {
   inquirer
     .prompt({
       type: "prompt",
@@ -98,7 +98,7 @@ const addEmp = () => {
           "This employee will NOT have a direct manager.",
           "John Doe",
           "Mike Chan",
-          "Ashley Rodgriquez",
+          "Ashley Rodriguez",
           "Kevin Tupik",
           "Malia Brown",
           "Sarah Lourd",
@@ -131,6 +131,8 @@ const addEmp = () => {
       },
     ])
     .then(({ chosenMgr, firstName, lastName, chosenRole }) => {
+      let manager_id = null;
+      console.log("XXX - chosenMgr=" + chosenMgr);
       if (chosenMgr == "This employee will NOT have a direct manager.") {
         manager_id = null;
       } else if (chosenMgr == "John Doe") {
@@ -148,6 +150,7 @@ const addEmp = () => {
       } else if (chosenMgr == "Tom Allen") {
         manager_id = "8";
       }
+      console.log("XXX - manager_id=" + manager_id);
       if (chosenRole == "Sales Lead") {
         role_id = "1";
       } else if (chosenRole == "Salesperson") {
@@ -163,9 +166,10 @@ const addEmp = () => {
       } else if (chosenRole == "Lawyer") {
         role_id = "7";
       }
+      console.log("XXX - role_id=" + role_id);
       return new Promise((resolve, reject) => {
         connection.query(
-          "INSERT INTO employee SET ?",
+          `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', ${role_id}, ${manager_id})`,
           [
             {
               first_name: firstName,

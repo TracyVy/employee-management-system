@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const cTable = require("console.table");
+// const cTable = require("console.table");
 const connection = require("./connection");
 const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
 const { addDept, addRole, addEmp } = require("./add");
@@ -27,7 +27,7 @@ const mainMenu = () => {
         case "View all departments":
           viewAllDept().then((res) => {
             res.forEach((element) => {
-              console.log(element);
+              console.log(element.name);
             });
             mainMenu();
           });
@@ -36,7 +36,7 @@ const mainMenu = () => {
         case "View all roles":
           viewAllRoles().then((res) => {
             res.forEach((element) => {
-              console.log(element);
+              console.log(element.title);
             });
             mainMenu();
           });
@@ -45,7 +45,7 @@ const mainMenu = () => {
         case "View all employees":
           viewAllEmps().then((res) => {
             res.forEach((element) => {
-              console.log(element);
+              console.log(element.first_name, element.last_name);
             });
             mainMenu();
           });
@@ -147,7 +147,7 @@ const updateEmpRole = (empChoice) => {
       }
       return new Promise((resolve, reject) => {
         connection.query(
-          "UPDATE employee SET ? WHERE ?",
+          "UPDATE employee SET role_id = ? WHERE id = ?",
           [
             {
               id: empId,
@@ -179,6 +179,7 @@ const deleteEmp = (empId) => {
   });
 };
 
+module.exports = { mainMenu };
 // Bonus points if you're able to:
 // Update employee managers
 // View employees by manager

@@ -3,25 +3,25 @@ const inquirer = require("inquirer");
 // const cTable = require("console.table");
 const connection = require("./connection");
 const { viewAllDept, viewAllRoles, viewAllEmps } = require("./view");
-const { addDept } = require("./add");
+const { addDept, addRole, addEmp } = require("./add");
 
 const mainMenu = () => {
   inquirer
     .prompt({
       type: "list",
+      name: "menuChoice",
       message: "What would you like to do?",
       choices: [
         "View all departments",
         "View all roles",
         "View all employees",
         "Add a department",
-        // "Add a role",
-        // "Add an employee",
+        "Add a role",
+        "Add an employee",
         "Update an employee role",
         "Delete an employee",
         "Quit",
       ],
-      name: "menuChoice",
     })
     .then(({ menuChoice }) => {
       console.log(menuChoice);
@@ -57,6 +57,14 @@ const mainMenu = () => {
           addDept();
           break;
 
+        case "Add a role":
+          addRole();
+          break;
+
+        case "Add an employee":
+          addEmp();
+          break;
+
         case "Update an employee role":
           updateEmpRole();
           break;
@@ -79,7 +87,7 @@ mainMenu();
 const updateEmpRole = (empId, roleId) => {
   inquirer.prompt({
     type: "list",
-    message: "What would you like to do?",
+    message: "Which employee needs a role change?",
     choices: [
       "John Doe",
       "Mike Chan",
